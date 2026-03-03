@@ -1,0 +1,447 @@
+/* VARIABLES CSS - El "panel de control" de nuestros estilos */
+:root {
+    /* Colores principales */
+    --color-primary: #6366f1;
+    --color-primary-dark: #4f46e5;
+    --color-secondary: #ec4899;
+    
+    /* Colores de prioridad */
+    --color-high: #ef4444;
+    --color-medium: #f59e0b;
+    --color-low: #10b981;
+    --color-done: #6b7280;
+    
+    /* Colores de fondo y texto */
+    --bg-body: #f3f4f6;
+    --bg-card: #ffffff;
+    --bg-aside: #1f2937;
+    --text-dark: #111827;
+    --text-light: #6b7280;
+    --text-white: #ffffff;
+    
+    /* Fuentes */
+    --font-main: 'Segoe UI', system-ui, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    
+    /* Espaciados */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    
+    /* Bordes y sombras */
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* RESET BÁSICO - Quitamos estilos por defecto del navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "header header"
+        "aside main";
+}
+
+/* HEADER */
+header {
+    grid-area: header;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--text-white);
+    padding: var(--space-md) var(--space-xl);
+    text-align: center;
+}
+
+header h1 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-xs);
+}
+
+/* ASIDE - Barra lateral */
+aside {
+    grid-area: aside;
+    background-color: var(--bg-aside);
+    color: var(--text-white);
+    padding: var(--space-lg);
+}
+
+aside h3, aside h4 {
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
+}
+
+aside ul {
+    list-style: none;
+    margin-bottom: var(--space-xl);
+}
+
+aside li {
+    margin-bottom: var(--space-sm);
+}
+
+aside a {
+    color: var(--text-white);
+    text-decoration: none;
+    display: block;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+aside a:hover, aside a.active {
+    background-color: var(--color-primary);
+}
+
+.stats {
+    padding-top: var(--space-lg);
+    border-top: 1px solid #374151;
+}
+
+.stats p {
+    margin-bottom: var(--space-xs);
+    color: var(--text-light);
+}
+
+/* MAIN - Contenido principal */
+main {
+    grid-area: main;
+    padding: var(--space-xl);
+    overflow-y: auto;
+}
+
+.task-list h2 {
+    margin-bottom: var(--space-lg);
+    font-size: var(--font-size-xl);
+    color: var(--text-dark);
+}
+
+/* MAQUETACIÓN CON FLEXBOX - Las tarjetas de tareas */
+.task-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow);
+    
+    /* BONUS: Transición suave para efectos */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border-left: 4px solid transparent;
+}
+
+/* Efecto hover suave */
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Estados de prioridad con colores */
+.task-card.high {
+    border-left-color: var(--color-high);
+}
+
+.task-card.medium {
+    border-left-color: var(--color-medium);
+}
+
+.task-card.low {
+    border-left-color: var(--color-low);
+}
+
+.task-card.completed {
+    border-left-color: var(--color-done);
+    opacity: 0.7;
+}
+
+/* FLEXBOX para alinear título y badge */
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.task-header h3 {
+    font-size: var(--font-size-lg);
+    color: var(--text-dark);
+}
+
+/* Badges de prioridad */
+.badge {
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+    color: white;
+}
+
+.badge.high { background-color: var(--color-high); }
+.badge.medium { background-color: var(--color-medium); }
+.badge.low { background-color: var(--color-low); }
+.badge.done { background-color: var(--color-done); }
+
+.category {
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+}
+
+.description {
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+}
+
+/* MEDIA QUERIES - Responsive para móviles */
+@media (max-width: 768px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "aside"
+            "main";
+    }
+    
+    aside {
+        padding: var(--space-md);
+    }
+    
+    aside ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-md);
+    }
+    
+    aside li {
+        margin-bottom: 0;
+    }
+    
+    aside a {
+        padding: var(--space-xs) var(--space-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    .stats {
+        display: none; /* Ocultamos stats en móvil para ahorrar espacio */
+    }
+    
+    main {
+        padding: var(--space-md);
+    }
+    
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+}/* ARREGLO: Mejorar la interactividad del menú */
+aside a {
+    color: var(--text-white);
+    text-decoration: none;
+    display: block;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    cursor: pointer; /* Muestra la manita al pasar el ratón */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto visual al hacer clic */
+aside a:active {
+    transform: scale(0.95);
+    background-color: var(--color-primary-dark);
+}
+
+/* Indicador de enlace activo/seleccionado */
+aside a.active {
+    background-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-dark);
+}
+
+/* Efecto hover mejorado */
+aside a:hover {
+    background-color: rgba(99, 102, 241, 0.2);
+    transform: translateX(5px);
+}
+
+/* Asegurar que el menú sea clicables en móviles también */
+@media (max-width: 768px) {
+    aside a {
+        padding: var(--space-xs) var(--space-md);
+        font-size: var(--font-size-sm);
+        min-height: 44px; /* Área táctil mínima recomendada */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    aside a:hover {
+        transform: translateY(-2px); /* En móvil no trasladamos en X */
+    }
+}/* Mejorar transiciones de las tarjetas */
+.task-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow);
+    border-left: 4px solid transparent;
+    
+    /* Transición suave para TODOS los cambios */
+    transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* Estado oculto para animaciones */
+.task-card.hidden {
+    transform: scale(0.8);
+    opacity: 0;
+    pointer-events: none;
+}/* MODAL - Ventana emergente */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    
+    /* Centrado con flexbox */
+    justify-content: center;
+    align-items: center;
+    
+    /* Animación de entrada */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: var(--space-xl);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    
+    /* Animación de escala */
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.close-btn {
+    position: absolute;
+    right: var(--space-md);
+    top: var(--space-md);
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: var(--color-high);
+}
+
+.modal-body {
+    margin-top: var(--space-lg);
+}
+
+.modal-meta {
+    background-color: var(--bg-body);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    margin: var(--space-md) 0;
+}
+
+.modal-meta p {
+    margin-bottom: var(--space-xs);
+    color: var(--text-light);
+}
+
+/* Botones del modal */
+.modal-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.modal-actions button {
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.btn-complete {
+    background-color: var(--color-low);
+    color: white;
+}
+
+.btn-edit {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-delete {
+    background-color: var(--color-high);
+    color: white;
+}
+
+.modal-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: var(--space-md);
+        margin: var(--space-sm);
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Lista de Tareas - DAW</title>
+   <link rel="stylesheet" href="css/styles.css">
+</head>
+    <!-- MODAL para detalles de tarea -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Título de la tarea</h2>
+            <div class="modal-body">
+                <span id="modalBadge" class="badge">Prioridad</span>
+                <p id="modalCategory" class="category">Categoría</p>
+                <p id="modalDescription">Descripción detallada...</p>
+                <div class="modal-meta">
+                    <p>📅 Fecha límite: <span id="modalDate">--</span></p>
+                    <p>⏱️ Tiempo estimado: <span id="modalTime">--</span></p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-complete">✓ Completar</button>
+                    <button class="btn-close">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+    <!-- HEADER: La parte superior de la página -->
+    <header>
+        <h1>📝 TaskMaster</h1>
+        <p>Tu gestor de tareas profesional</p>
+    </header>
+
+    <!-- ASIDE: Barra lateral (se moverá en móviles) -->
+    <aside>
+        <nav>
+            <h3>Menú</h3>
+            <ul>
+                <li><a href="#" class="active">Todas las tareas</a></li>
+                <li><a href="#">Alta prioridad</a></li>
+                <li><a href="#">Completadas</a></li>
+                <li><a href="#">Configuración</a></li>
+            </ul>
+            
+            <div class="stats">
+                <h4>Estadísticas</h4>
+                <p>Total: <span id="total">5</span></p>
+                <p>Completadas: <span id="done">2</span></p>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- MAIN: Contenido principal -->
+    <main>
+   
+            
+<!-- En tu <section class="task-list">, modifica las tareas así: -->
+
+<section class="task-list">
+    <h2>Mis Tareas</h2>
+    
+    <!-- Tarea 1 - ALTA -->
+    <article class="task-card high" data-priority="high">
+        <div class="task-header">
+            <h3>Diseñar mockups</h3>
+            <span class="badge high">Alta</span>
+        </div>
+        <p class="category">📐 Diseño UX</p>
+        <p class="description">Crear wireframes para la nueva funcionalidad</p>
+    </article>
+
+    <!-- Tarea 2 - MEDIA -->
+    <article class="task-card medium" data-priority="medium">
+        <div class="task-header">
+            <h3>Revisar código</h3>
+            <span class="badge medium">Media</span>
+        </div>
+        <p class="category">💻 Desarrollo</p>
+        <p class="description">Code review del módulo de autenticación</p>
+    </article>
+
+    <!-- Tarea 3 - BAJA -->
+    <article class="task-card low" data-priority="low">
+        <div class="task-header">
+            <h3>Actualizar documentación</h3>
+            <span class="badge low">Baja</span>
+        </div>
+        <p class="category">📚 Documentación</p>
+        <p class="description">Añadir ejemplos de uso en la wiki</p>
+    </article>
+
+    <!-- Tarea 4 - COMPLETADA -->
+    <article class="task-card completed" data-priority="completed">
+        <div class="task-header">
+            <h3>Setup del proyecto</h3>
+            <span class="badge done">✓</span>
+        </div>
+        <p class="category">⚙️ DevOps</p>
+        <p class="description">Configurar repositorio y CI/CD</p>
+    </article>
+</section>
+    </main>
+        <!-- Script simple para hacer el menú interactivo -->
+  <script>
+    // Seleccionamos elementos
+    const menuLinks = document.querySelectorAll('aside a');
+    const tasks = document.querySelectorAll('.task-card');
+    const totalCounter = document.getElementById('total');
+    
+    // Función para filtrar tareas
+    function filterTasks(filterType) {
+        let visibleCount = 0;
+        
+        tasks.forEach(task => {
+            // BONUS: Animación de transición suave
+            task.style.transition = 'all 0.4s ease';
+            task.style.transform = 'scale(0.8)';
+            task.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Lógica de filtrado
+                if (filterType === 'all') {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else if (filterType === 'high' && task.dataset.priority === 'high') {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else if (filterType === 'completed' && task.dataset.priority === 'completed') {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else if (filterType === 'low' && task.dataset.priority === 'low') {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else if (filterType === 'medium' && task.dataset.priority === 'medium') {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    task.style.display = 'none';
+                }
+                
+                // Animación de entrada
+                if (task.style.display === 'block') {
+                    setTimeout(() => {
+                        task.style.transform = 'scale(1)';
+                        task.style.opacity = '1';
+                    }, 50);
+                }
+            }, 300);
+        });
+        
+        // Actualizar contador
+        if (totalCounter) {
+            totalCounter.textContent = visibleCount;
+        }
+    }
+    
+    // Asignar clics al menú
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Quitar active de todos
+            menuLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Determinar filtro según el texto del enlace
+            const text = this.textContent.toLowerCase();
+            let filter = 'all';
+            
+            if (text.includes('alta')) filter = 'high';
+            else if (text.includes('completadas')) filter = 'completed';
+            else if (text.includes('baja')) filter = 'low';
+            else if (text.includes('media')) filter = 'medium';
+            
+            // Aplicar filtro
+            filterTasks(filter);
+            
+            console.log('Filtro aplicado:', filter);
+        });
+    });
+</script>
+    <!-- Conectamos el archivo JavaScript externo -->
+    <script src="js/script.js"></script>
+</body>
+</body>
+</html>
