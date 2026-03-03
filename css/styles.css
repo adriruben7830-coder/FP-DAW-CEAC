@@ -1,45 +1,33 @@
 /* VARIABLES CSS - El "panel de control" de nuestros estilos */
 :root {
-    /* Colores principales */
     --color-primary: #6366f1;
     --color-primary-dark: #4f46e5;
     --color-secondary: #ec4899;
-    
-    /* Colores de prioridad */
     --color-high: #ef4444;
     --color-medium: #f59e0b;
     --color-low: #10b981;
     --color-done: #6b7280;
-    
-    /* Colores de fondo y texto */
     --bg-body: #f3f4f6;
     --bg-card: #ffffff;
     --bg-aside: #1f2937;
     --text-dark: #111827;
     --text-light: #6b7280;
     --text-white: #ffffff;
-    
-    /* Fuentes */
     --font-main: 'Segoe UI', system-ui, sans-serif;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
     --font-size-lg: 1.25rem;
     --font-size-xl: 1.5rem;
-    
-    /* Espaciados */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 1.5rem;
     --space-lg: 2rem;
     --space-xl: 3rem;
-    
-    /* Bordes y sombras */
     --radius: 12px;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* RESET BÁSICO - Quitamos estilos por defecto del navegador */
 * {
     margin: 0;
     padding: 0;
@@ -74,7 +62,7 @@ header h1 {
     margin-bottom: var(--space-xs);
 }
 
-/* ASIDE - Barra lateral */
+/* ASIDE */
 aside {
     grid-area: aside;
     background-color: var(--bg-aside);
@@ -103,10 +91,21 @@ aside a {
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-aside a:hover, aside a.active {
+aside a:hover {
+    background-color: rgba(99, 102, 241, 0.2);
+    transform: translateX(5px);
+}
+
+aside a.active {
     background-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-dark);
+}
+
+aside a:active {
+    transform: scale(0.95);
 }
 
 .stats {
@@ -119,58 +118,125 @@ aside a:hover, aside a.active {
     color: var(--text-light);
 }
 
-/* MAIN - Contenido principal */
+/* MAIN */
 main {
     grid-area: main;
     padding: var(--space-xl);
     overflow-y: auto;
 }
 
+/* FORMULARIO NUEVA TAREA */
+.add-task-form {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow);
+}
+
+.add-task-form h2 {
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-lg);
+}
+
+#taskForm {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-sm);
+}
+
+#taskInput {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--space-xs) var(--space-sm);
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    font-size: var(--font-size-base);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#taskInput:focus {
+    border-color: var(--color-primary);
+}
+
+#prioritySelect {
+    padding: var(--space-xs) var(--space-sm);
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    outline: none;
+}
+
+#taskForm button[type="submit"] {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#taskForm button[type="submit"]:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+#searchInput {
+    width: 100%;
+    padding: var(--space-xs) var(--space-sm);
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    font-size: var(--font-size-base);
+    margin-top: var(--space-xs);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+    border-color: var(--color-primary);
+}
+
+/* TARJETAS DE TAREAS */
 .task-list h2 {
     margin-bottom: var(--space-lg);
     font-size: var(--font-size-xl);
-    color: var(--text-dark);
 }
 
-/* MAQUETACIÓN CON FLEXBOX - Las tarjetas de tareas */
 .task-card {
     background-color: var(--bg-card);
     border-radius: var(--radius);
     padding: var(--space-md);
     margin-bottom: var(--space-md);
     box-shadow: var(--shadow);
-    
-    /* BONUS: Transición suave para efectos */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
     border-left: 4px solid transparent;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
 }
 
-/* Efecto hover suave */
 .task-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
-/* Estados de prioridad con colores */
-.task-card.high {
-    border-left-color: var(--color-high);
-}
-
-.task-card.medium {
-    border-left-color: var(--color-medium);
-}
-
-.task-card.low {
-    border-left-color: var(--color-low);
-}
-
+.task-card.high  { border-left-color: var(--color-high); }
+.task-card.medium { border-left-color: var(--color-medium); }
+.task-card.low   { border-left-color: var(--color-low); }
 .task-card.completed {
     border-left-color: var(--color-done);
     opacity: 0.7;
 }
 
-/* FLEXBOX para alinear título y badge */
+.task-card.completed h3 {
+    text-decoration: line-through;
+    color: var(--text-light);
+}
+
 .task-header {
     display: flex;
     justify-content: space-between;
@@ -183,7 +249,7 @@ main {
     color: var(--text-dark);
 }
 
-/* Badges de prioridad */
+/* BADGES */
 .badge {
     padding: var(--space-xs) var(--space-sm);
     border-radius: 20px;
@@ -192,24 +258,53 @@ main {
     color: white;
 }
 
-.badge.high { background-color: var(--color-high); }
+.badge.high   { background-color: var(--color-high); }
 .badge.medium { background-color: var(--color-medium); }
-.badge.low { background-color: var(--color-low); }
-.badge.done { background-color: var(--color-done); }
+.badge.low    { background-color: var(--color-low); }
+.badge.done   { background-color: var(--color-done); }
 
-.category {
-    color: var(--color-primary);
+/* BOTONES DE ACCIÓN EN CADA TAREA */
+.task-actions {
+    display: flex;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+}
+
+.btn-completar {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-low);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
     font-size: var(--font-size-sm);
     font-weight: 600;
-    margin-bottom: var(--space-xs);
+    transition: all 0.3s ease;
 }
 
-.description {
-    color: var(--text-light);
-    font-size: var(--font-size-base);
+.btn-completar:hover {
+    background: #059669;
+    transform: translateY(-1px);
 }
 
-/* MEDIA QUERIES - Responsive para móviles */
+.btn-eliminar {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-high);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-eliminar:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
     body {
         grid-template-columns: 1fr;
@@ -218,230 +313,40 @@ main {
             "aside"
             "main";
     }
-    
+
     aside {
         padding: var(--space-md);
     }
-    
+
     aside ul {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-sm);
         margin-bottom: var(--space-md);
     }
-    
-    aside li {
-        margin-bottom: 0;
-    }
-    
+
+    aside li { margin-bottom: 0; }
+
     aside a {
         padding: var(--space-xs) var(--space-md);
         font-size: var(--font-size-sm);
-    }
-    
-    .stats {
-        display: none; /* Ocultamos stats en móvil para ahorrar espacio */
-    }
-    
-    main {
-        padding: var(--space-md);
-    }
-    
-    .task-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-xs);
-    }
-}/* ARREGLO: Mejorar la interactividad del menú */
-aside a {
-    color: var(--text-white);
-    text-decoration: none;
-    display: block;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--radius);
-    transition: all 0.3s ease;
-    cursor: pointer; /* Muestra la manita al pasar el ratón */
-    position: relative;
-    overflow: hidden;
-}
-
-/* Efecto visual al hacer clic */
-aside a:active {
-    transform: scale(0.95);
-    background-color: var(--color-primary-dark);
-}
-
-/* Indicador de enlace activo/seleccionado */
-aside a.active {
-    background-color: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--color-primary-dark);
-}
-
-/* Efecto hover mejorado */
-aside a:hover {
-    background-color: rgba(99, 102, 241, 0.2);
-    transform: translateX(5px);
-}
-
-/* Asegurar que el menú sea clicables en móviles también */
-@media (max-width: 768px) {
-    aside a {
-        padding: var(--space-xs) var(--space-md);
-        font-size: var(--font-size-sm);
-        min-height: 44px; /* Área táctil mínima recomendada */
+        min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    
-    aside a:hover {
-        transform: translateY(-2px); /* En móvil no trasladamos en X */
-    }
-}/* Mejorar transiciones de las tarjetas */
-.task-card {
-    background-color: var(--bg-card);
-    border-radius: var(--radius);
-    padding: var(--space-md);
-    margin-bottom: var(--space-md);
-    box-shadow: var(--shadow);
-    border-left: 4px solid transparent;
-    
-    /* Transición suave para TODOS los cambios */
-    transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
 
-/* Estado oculto para animaciones */
-.task-card.hidden {
-    transform: scale(0.8);
-    opacity: 0;
-    pointer-events: none;
-}/* MODAL - Ventana emergente */
-.modal {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    
-    /* Centrado con flexbox */
-    justify-content: center;
-    align-items: center;
-    
-    /* Animación de entrada */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+    aside a:hover { transform: translateY(-2px); }
 
-.modal.active {
-    display: flex;
-    opacity: 1;
-}
+    .stats { display: none; }
 
-.modal-content {
-    background-color: var(--bg-card);
-    border-radius: var(--radius);
-    padding: var(--space-xl);
-    width: 90%;
-    max-width: 500px;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    
-    /* Animación de escala */
-    transform: scale(0.8);
-    transition: transform 0.3s ease;
-}
+    main { padding: var(--space-md); }
 
-.modal.active .modal-content {
-    transform: scale(1);
-}
+    #taskForm { flex-direction: column; }
 
-.close-btn {
-    position: absolute;
-    right: var(--space-md);
-    top: var(--space-md);
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-light);
-    transition: color 0.3s;
-}
-
-.close-btn:hover {
-    color: var(--color-high);
-}
-
-.modal-body {
-    margin-top: var(--space-lg);
-}
-
-.modal-meta {
-    background-color: var(--bg-body);
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    margin: var(--space-md) 0;
-}
-
-.modal-meta p {
-    margin-bottom: var(--space-xs);
-    color: var(--text-light);
-}
-
-/* Botones del modal */
-.modal-actions {
-    display: flex;
-    gap: var(--space-sm);
-    margin-top: var(--space-lg);
-    flex-wrap: wrap;
-}
-
-.modal-actions button {
-    padding: var(--space-sm) var(--space-md);
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 120px;
-}
-
-.btn-complete {
-    background-color: var(--color-low);
-    color: white;
-}
-
-.btn-edit {
-    background-color: var(--color-primary);
-    color: white;
-}
-
-.btn-delete {
-    background-color: var(--color-high);
-    color: white;
-}
-
-.modal-actions button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-}
-
-/* Responsive modal */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        padding: var(--space-md);
-        margin: var(--space-sm);
-    }
-    
-    .modal-actions {
+    .task-header {
         flex-direction: column;
-    }
-    
-    .modal-actions button {
-        width: 100%;
+        align-items: flex-start;
+        gap: var(--space-xs);
     }
 }
