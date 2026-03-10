@@ -103,11 +103,47 @@ function crearElementoTarea(tarea) {
             </span>
         </div>
         <div class="task-actions">
-            <button class="btn-completar">${tarea.completada ? '↩️ Deshacer' : '✓ Completar'}</button>
-            <button class="btn-eliminar">🗑️ Eliminar</button>
+        <button class="btn-completar" aria-label="${tarea.completada ? 'Deshacer tarea: ' + tarea.texto : 'Completar tarea: ' + tarea.texto}">
+    ${tarea.completada ? '↩️ Deshacer' : '✓ Completar'}
+</button>
+<button class="btn-eliminar" aria-label="Eliminar tarea: ${tarea.texto}">
+    🗑️ Eliminar
+</button>
         </div>
     `;
+// EVENTO: EDITAR CON DOBLE CLIC
+article.querySelector('h3').addEventListener('dblclick', function() {
+    const h3 = this;
+    const textoOriginal = tarea.texto;
 
+    // Convertimos el h3 en un input
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = textoOriginal;
+    input.style.cssText = 'width:100%; padding:4px 8px; border:2px solid #6366f1; border-radius:8px; font-size:1rem;';
+
+    h3.replaceWith(input);
+    input.focus();
+
+    // Función que guarda el cambio
+    function guardarEdicion() {
+        const nuevoTexto = input.value.trim();
+        if (nuevoTexto !== '' && nuevoTexto !== textoOriginal) {
+            tarea.texto = nuevoTexto;
+            guardarEnStorage(tareas);
+        }
+        renderizarTodas(tareas);
+    }
+
+    // Guardar al pulsar Enter
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') guardarEdicion();
+        if (e.key === 'Escape') renderizarTodas(tareas); // cancelar
+    });
+
+    // Guardar al hacer clic fuera
+    input.addEventListener('blur', guardarEdicion);
+});
     // EVENTO: COMPLETAR
     article.querySelector('.btn-completar').addEventListener('click', function() {
         tarea.completada = !tarea.completada;
@@ -141,8 +177,11 @@ function cargarTareasDeStorage() {
 // --- 9. ACTUALIZAR CONTADORES ---
 function actualizarContador() {
     const completadas = tareas.filter(t => t.completada).length;
+    const pendientes = tareas.filter(t => !t.completada).length;
+
     totalCounter.textContent = tareas.length;
     document.getElementById('done').textContent = completadas;
+    document.getElementById('pending').textContent = pendientes;
 }
 
 // --- 10. FILTROS DEL MENÚ ---
@@ -165,4 +204,23 @@ searchInput.addEventListener('input', function() {
         const texto = card.querySelector('h3').textContent.toLowerCase();
         card.style.display = texto.includes(textoBusqueda) ? 'block' : 'none';
     });
+});
+// --- 12. MARCAR TODAS COMO COMPLETADAS ---
+document.getElementById('btnCompletarTodas').addEventListener('click', function() {
+    tareas.forEach(function(tarea) {
+        tarea.completada = true;
+    });
+    guardarEnStorage(tareas);
+    renderizarTodas(tareas);
+    actualizarContador();
+});
+
+// --- 13. BORRAR TODAS LAS COMPLETADAS ---
+document.getElementById('btnBorrarCompletadas').addEventListener('click', function() {
+    tareas = tareas.filter(function(tarea) {
+        return !tarea.completada;
+    });
+    guardarEnStorage(tareas);
+    renderizarTodas(tareas);
+    actualizarContador();
 });

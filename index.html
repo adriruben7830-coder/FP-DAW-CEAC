@@ -34,6 +34,7 @@
                 <h4>Estadísticas</h4>
                 <p>Total: <span id="total">0</span></p>
                 <p>Completadas: <span id="done">0</span></p>
+                <p>Pendientes: <span id="pending">0</span></p>
             </div>
         </nav>
     </aside>
@@ -70,11 +71,21 @@
         </section>
 
         <!-- LISTA DE TAREAS -->
-        <section class="task-list">
-            <h2 class="dark:text-white">Mis Tareas</h2>
-            <div id="taskList"></div>
-        </section>
+        <<section class="task-list">
+    <h2 class="dark:text-white">Mis Tareas</h2>
 
+    <!-- AÑADE ESTO -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <button id="btnCompletarTodas" style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
+            ✅ Marcar todas
+        </button>
+        <button id="btnBorrarCompletadas" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
+            🗑️ Borrar completadas
+        </button>
+    </div>
+
+    <div id="taskList"></div>
+</section>
     </main>
 
     <script src="js/app.js"></script>
