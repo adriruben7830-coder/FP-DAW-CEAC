@@ -255,3 +255,24 @@ document.getElementById('btnBorrarCompletadas').addEventListener('click', functi
     renderizarTodas(tareas);
     actualizarContador();
 });
+function contarAltaPrioridad(tareas) {
+    return tareas.filter(function(tarea) {
+        return tarea.prioridad === 'high';
+    }).length;
+}
+function buscratareas(tareas, palabra) {
+return tareas.filter(function(tarea) {
+    return tarea.texto.toLowerCase().includes(palabra.toLowerCase());
+});
+}
+
+
+function ordenarPorprioridad(tareas) {
+    const orden = {
+        high: 1,
+        medium: 2,
+        low: 3
+    };
+    return tareas.sort(function(a, b) {
+        return orden[a.prioridad] - orden[b.prioridad];
+    };
