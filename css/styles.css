@@ -341,26 +341,52 @@ main {
             "main";
     }
 
+    /* HEADER MÓVIL */
+    header {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    header h1 {
+        font-size: 1.25rem;
+    }
+
+    header p {
+        font-size: 0.75rem;
+    }
+
+    /* ASIDE MÓVIL */
     aside {
-        padding: var(--space-md);
+        padding: 1rem;
+    }
+
+    aside h3 {
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
     }
 
     aside ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--space-sm);
-        margin-bottom: var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+    aside li {
+        margin-bottom: 0;
     }
 
-    aside li { margin-bottom: 0; }
-
     aside a {
-        padding: var(--space-xs) var(--space-md);
-        font-size: var(--font-size-sm);
-        min-height: 44px;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        min-height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
+        white-space: nowrap;
     }
 
     aside a:hover { transform: translateY(-2px); }
