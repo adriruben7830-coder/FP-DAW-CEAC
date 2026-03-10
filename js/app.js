@@ -2,6 +2,15 @@
 // APP.JS - Lógica principal de TaskMaster
 // Práctica 3 y 4: JavaScript + DOM + LocalStorage + Tailwind + Modo oscuro
 // ============================================
+/**
+ * @typedef {Object} Tarea
+ * @property {number} id - Identificador único
+ * @property {string} texto - Título de la tarea
+ * @property {string} prioridad - 'high' | 'medium' | 'low'
+ * @property {boolean} completada - Estado de la tarea
+ * @property {string} createdAt - Fecha de creación
+ */
+
 
 // --- 1. SELECCIONAMOS LOS ELEMENTOS DEL HTML ---
 const taskForm = document.getElementById('taskForm');
@@ -62,6 +71,10 @@ taskForm.addEventListener('submit', function(e) {
 });
 
 // --- 5. FUNCIÓN: RENDERIZAR TAREAS ---
+/**
+ * Renderiza las tareas en el DOM aplicando el filtro activo.
+ * @param {Tarea[]} listaDeTareas - Array de tareas a mostrar
+ */
 function renderizarTodas(listaDeTareas) {
     taskList.innerHTML = '';
 
@@ -82,6 +95,11 @@ function renderizarTodas(listaDeTareas) {
 }
 
 // --- 6. FUNCIÓN: CREAR TARJETA DE TAREA ---
+/**
+ * Crea la tarjeta visual de una tarea y la añade al DOM.
+ * Incluye eventos para completar, eliminar y editar.
+ * @param {Tarea} tarea - Objeto tarea a renderizar
+ */
 function crearElementoTarea(tarea) {
 
     const prioridadTexto = {
@@ -164,17 +182,30 @@ article.querySelector('h3').addEventListener('dblclick', function() {
 }
 
 // --- 7. GUARDAR EN LOCALSTORAGE ---
+/**
+ * Guarda el array de tareas en LocalStorage como JSON.
+ * @param {Tarea[]} listaDeTareas - Array de tareas a guardar
+ */
 function guardarEnStorage(listaDeTareas) {
     localStorage.setItem('tareas', JSON.stringify(listaDeTareas));
 }
 
 // --- 8. CARGAR DESDE LOCALSTORAGE ---
+/**
+ * Recupera las tareas guardadas en LocalStorage.
+ * Si no hay datos devuelve un array vacío.
+ * @returns {Tarea[]} Array de tareas guardadas
+ */
 function cargarTareasDeStorage() {
     const datos = localStorage.getItem('tareas');
     return datos ? JSON.parse(datos) : [];
 }
 
 // --- 9. ACTUALIZAR CONTADORES ---
+/**
+ * Actualiza los contadores de estadísticas en el panel lateral.
+ * Muestra total, completadas y pendientes.
+ */
 function actualizarContador() {
     const completadas = tareas.filter(t => t.completada).length;
     const pendientes = tareas.filter(t => !t.completada).length;
