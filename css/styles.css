@@ -340,9 +340,16 @@ main {
             "aside"
             "main";
     }
+    header {
+    padding: 1rem;
+}
+
+header h1 {
+    font-size: 1.20rem;
+}
 
     aside {
-        padding: var(--space-md);
+     padding: 0.75rem;
     }
 
     aside ul {
