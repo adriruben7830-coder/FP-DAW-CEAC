@@ -3,7 +3,7 @@
 // Capa de red: todas las peticiones al servidor
 // ============================================
 
-const API_URL = 'http://localhost:3000/api/v1/tasks';
+const API_URL = 'https://taskflow-api-seven.vercel.app/api/v1/tasks';
 
 /**
  * Obtiene todas las tareas del servidor
