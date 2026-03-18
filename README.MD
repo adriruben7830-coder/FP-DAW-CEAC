@@ -1,8 +1,8 @@
-# 📝 TaskMaster
+# 📝 TaskFlow
 
 Aplicación de gestión de tareas desarrollada como proyecto de prácticas
 del ciclo DAW en CEAC. Permite crear, completar, eliminar y filtrar tareas
-con persistencia de datos en LocalStorage.
+con persistencia de datos en una API REST con Node.js y Express.
 
 ## 🚀 Demo en producción
 [Enlace a Vercel] https://flujo-de-tareas-proyecto.vercel.app/
@@ -11,26 +11,32 @@ con persistencia de datos en LocalStorage.
 
 - ➕ Añadir tareas con título y prioridad (alta, media, baja)
 - ✅ Marcar tareas como completadas
-- 🗑️ Eliminar tareas individuales
-- ✏️ Editar el título con doble clic
+- 🗑️ Eliminar tareas individuales y en bloque
 - 🔍 Buscar tareas en tiempo real
-- 🔃 Ordenar tareas por prioridad
 - 📊 Estadísticas en tiempo real (total, completadas, pendientes)
 - 🌙 Modo oscuro con preferencia guardada
-- 💾 Persistencia de datos con LocalStorage
+- ⏳ Estados de carga y error en la interfaz
 - 📱 Diseño responsive para móvil y escritorio
 
 ## 🛠️ Tecnologías usadas
 
+### Frontend
 - HTML5 semántico
 - CSS3 con variables y Flexbox
-- JavaScript vanilla
+- JavaScript vanilla con Fetch API
 - Tailwind CSS
-- LocalStorage API
+
+### Backend
+- Node.js
+- Express.js
+- CORS
+- dotenv
+- Nodemon (desarrollo)
+
+### Herramientas
 - Git y GitHub
 - Vercel (despliegue)
-- Cursor IDE con IA
-- MCP filesystem server
+- Thunder Client (pruebas de API)
 
 ## 📁 Estructura del proyecto
 ```
@@ -40,7 +46,21 @@ TASKFLOW_PROJECT/
 │   ├── styles.css
 │   └── output.css
 ├── js/
-│   └── app.js
+│   ├── app.js
+│   └── client.js
+├── server/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── env.js
+│   │   ├── controllers/
+│   │   │   └── task.controller.js
+│   │   ├── routes/
+│   │   │   └── task.routes.js
+│   │   ├── services/
+│   │   │   └── task.service.js
+│   │   └── index.js
+│   ├── .env
+│   └── package.json
 ├── docs/
 │   └── ai/
 │       ├── ai-comparison.md
@@ -51,19 +71,83 @@ TASKFLOW_PROJECT/
 └── README.md
 ```
 
+## 🏗️ Arquitectura del backend
+
+El backend sigue una arquitectura por capas estricta con separación de responsabilidades:
+
+**Capa de enrutamiento (routes):** Escucha las peticiones HTTP y las dirige al controlador correspondiente. No contiene lógica de negocio.
+
+**Capa de controladores (controllers):** Extrae los datos de la petición, aplica validaciones defensivas y llama a la capa de servicios. Devuelve la respuesta HTTP con el código correcto.
+
+**Capa de servicios (services):** Contiene la lógica de negocio pura. Desconoce completamente la existencia de Express, req o res. Usa un array en memoria como persistencia simulada.
+
+### Middlewares implementados
+
+- `express.json()` — Parsea el body de las peticiones como JSON
+- `cors()` — Permite peticiones desde el frontend en otro origen
+- `loggerAcademico` — Middleware personalizado que registra método, ruta, código de estado y tiempo de respuesta de cada petición
+
+## 🌐 API REST
+
+Base URL: `http://localhost:3000/api/v1`
+
+| Método | Endpoint | Descripción | Respuesta |
+|--------|----------|-------------|-----------|
+| GET | /tasks | Obtener todas las tareas | 200 OK |
+| POST | /tasks | Crear una nueva tarea | 201 Created |
+| DELETE | /tasks/:id | Eliminar una tarea por ID | 204 No Content |
+
+### Ejemplos de uso
+
+**GET /tasks**
+```
+Respuesta: []
+```
+
+**POST /tasks**
+```json
+Body:    { "titulo": "Mi tarea" }
+Respuesta: { "id": 1, "titulo": "Mi tarea", "completada": false }
+```
+
+**POST /tasks — Error de validación**
+```json
+Body:    { "titulo": "ab" }
+Respuesta 400: { "error": "El título es obligatorio y debe tener al menos 3 caracteres." }
+```
+
+**DELETE /tasks/99 — ID no existe**
+```json
+Respuesta 404: { "error": "Tarea no encontrada." }
+```
+
+## ⚙️ Cómo ejecutar el proyecto
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/adriruben7830-coder/FP-DAW-CEAC.git
+```
+
+### 2. Instalar dependencias del backend
+```bash
+cd server
+npm install
+```
+
+### 3. Crear el archivo .env dentro de server/
+```
+PORT=3000
+```
+
+### 4. Arrancar el servidor
+```bash
+npm run dev
+```
+
+### 5. Abrir el frontend
+Abre index.html con Live Server o directamente en el navegador.
+
 ## 🤖 IA utilizada en el desarrollo
 
-Este proyecto ha sido desarrollado con ayuda de herramientas de IA:
-- **Claude** para refactorización, JSDoc y resolución de problemas
-- **ChatGPT** para comparativa de explicaciones técnicas
+- **Claude** para arquitectura, refactorización y resolución de problemas
 - **Cursor IDE** para edición inline y chat contextual
-- **MCP filesystem** para análisis del proyecto desde la IA
-
-## 📋 Cómo usar la aplicación
-
-1. Escribe el título de la tarea en el campo de texto
-2. Selecciona la prioridad (alta, media o baja)
-3. Pulsa "Añadir Tarea"
-4. Usa el menú lateral para filtrar por prioridad
-5. Doble clic sobre una tarea para editarla
-6. Pulsa "Marcar todas" para completar todas de golpe
